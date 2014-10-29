@@ -29,7 +29,7 @@ public class Main extends ActionBarActivity implements NavigationDrawerFragment.
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
+    public void onNavigationDrawerItemSelected(int position,boolean fromSavedInstanceState) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch (position){
@@ -39,9 +39,11 @@ public class Main extends ActionBarActivity implements NavigationDrawerFragment.
                         .commit();
                 break;
             case 1:
+                if (!fromSavedInstanceState) {
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, PlaceholderFragmentSale.newInstance(position + 1))
                         .commit();
+                }
                 break;
         }
     }

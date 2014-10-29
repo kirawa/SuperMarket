@@ -3,6 +3,7 @@ package altarix.supermarket;
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,9 +24,20 @@ public  class PlaceholderFragmentSale extends Fragment implements View.OnClickLi
     Spinner spinner;
     ArrayAdapter arrayAdapter;
     Button btnDone;
-    EditText editTextName, editTextCost;
+    EditText editTextName;
+    EditText editTextCost;
     PriceListProvider dataSource;
     List<PriceList> priceLists;
+
+
+    String name;
+
+    private  final String ARG_NAME = "name";
+    private  final String ARG_COST = "cost";
+    private  final String ARG_TYPE = "type";
+
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
 
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -35,7 +47,9 @@ public  class PlaceholderFragmentSale extends Fragment implements View.OnClickLi
         super.onCreate(savedInstanceState);
         arrayAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.catigories, android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
     }
+
 
     public static PlaceholderFragmentSale newInstance(int sectionNumber) {
         PlaceholderFragmentSale fragment = new PlaceholderFragmentSale();
@@ -43,6 +57,17 @@ public  class PlaceholderFragmentSale extends Fragment implements View.OnClickLi
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle args) {
+        super.onSaveInstanceState(args);
+        editor = sharedPreferences.edit();
+        editor.putString(ARG_NAME,editTextName.getText().toString());
+        editor.putString(ARG_COST,editTextCost.getText().toString());
+        editor.putInt(ARG_TYPE,spinner.getSelectedItemPosition());
+        editor.commit();
+        setRetainInstance(true);
     }
 
     @Override
@@ -54,6 +79,12 @@ public  class PlaceholderFragmentSale extends Fragment implements View.OnClickLi
         editTextCost = (EditText)view.findViewById(R.id.editTextCost);
         spinner.setAdapter(arrayAdapter);
         btnDone.setOnClickListener(this);
+        if (getRetainInstance()){
+            name = sharedPreferences.getString(ARG_NAME,"");
+            editTextName.setText(sharedPreferences.getString(ARG_NAME,""));
+            editTextCost.setText(sharedPreferences.getString(ARG_COST,""));
+            spinner.setSelection(sharedPreferences.getInt(ARG_TYPE,0));
+        }
         return view;
     }
 
@@ -85,6 +116,7 @@ public  class PlaceholderFragmentSale extends Fragment implements View.OnClickLi
         return true;
     }
 
+
     private void createItem(Context context){
         String name = editTextName.getText().toString().trim();
         String cost = editTextCost.getText().toString().trim();
@@ -95,6 +127,8 @@ public  class PlaceholderFragmentSale extends Fragment implements View.OnClickLi
             if (equalsElement(name,cost,type,dataSource)){
                 getActivity().getContentResolver().insert(PriceListProvider.PRICE_CONTENT_URI, dataSource.createContentValues(name,type,cost,1));
             }
+            editTextName.setText("");
+            editTextCost.setText("");
             Toast.makeText(context, "Сохраненно", Toast.LENGTH_SHORT).show();
         }else {
             Toast.makeText(context,"Заполните поля",Toast.LENGTH_SHORT).show();
