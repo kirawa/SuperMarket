@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_back">
+<LinearLayout
+    android:layout_margin="20dp"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <EditText
+        android:id="@+id/editTextName"
+        android:singleLine="true"
+        android:imeOptions="actionNext"
+        android:layout_width="fill_parent"
+        android:hint="Наименование товара"
+        android:layout_height="60dp" />
+    <EditText
+        android:imeOptions="actionDone"
+        android:id="@+id/editTextCost"
+        android:inputType="numberDecimal"
+        android:layout_width="fill_parent"
+        android:hint="Ценна"
+        android:layout_height="60dp" />
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:entries="@array/catigories">
+    </Spinner>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btnDone"
+            android:text="Готово"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="60dp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
