@@ -34,9 +34,11 @@ public class Main extends ActionBarActivity implements NavigationDrawerFragment.
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch (position){
             case 0:
+                if (!fromSavedInstanceState){
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, PlaceholderFragmentBuy.newInstance(position + 1))
                         .commit();
+                }
                 break;
             case 1:
                 if (!fromSavedInstanceState) {

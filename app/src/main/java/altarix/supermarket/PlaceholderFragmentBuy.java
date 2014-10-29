@@ -32,7 +32,8 @@ public class PlaceholderFragmentBuy extends Fragment implements View.OnClickList
 
     int black,transparent,grey,color_999,state;
 
-    public static final String PREFERENCES_TYPE = "0";
+    public  final String PREFERENCES_TYPE = "0";
+    public static final String ARG_POSITION = "args";
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
@@ -109,6 +110,9 @@ public class PlaceholderFragmentBuy extends Fragment implements View.OnClickList
                 textHousehold.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 break;
         }
+        if (getRetainInstance()){
+            pager.setCurrentItem(sharedPreferences.getInt(ARG_POSITION,0));
+        }
         return view;
     }
 
@@ -179,6 +183,15 @@ public class PlaceholderFragmentBuy extends Fragment implements View.OnClickList
         super.onActivityCreated(savedInstanceState);
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        editor = sharedPreferences.edit();
+        editor.putInt(ARG_POSITION,pager.getCurrentItem());
+        editor.commit();
+        setRetainInstance(true);
     }
 
     private int getType(){

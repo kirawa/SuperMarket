@@ -29,9 +29,6 @@ public  class PlaceholderFragmentSale extends Fragment implements View.OnClickLi
     PriceListProvider dataSource;
     List<PriceList> priceLists;
 
-
-    String name;
-
     private  final String ARG_NAME = "name";
     private  final String ARG_COST = "cost";
     private  final String ARG_TYPE = "type";
@@ -80,7 +77,6 @@ public  class PlaceholderFragmentSale extends Fragment implements View.OnClickLi
         spinner.setAdapter(arrayAdapter);
         btnDone.setOnClickListener(this);
         if (getRetainInstance()){
-            name = sharedPreferences.getString(ARG_NAME,"");
             editTextName.setText(sharedPreferences.getString(ARG_NAME,""));
             editTextCost.setText(sharedPreferences.getString(ARG_COST,""));
             spinner.setSelection(sharedPreferences.getInt(ARG_TYPE,0));
